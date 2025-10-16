@@ -3,10 +3,10 @@ import pandas as pd
 import mysql.connector
 
 DB_CONFIG = {
-    "host": "localhost",
-    "user": "root",
-    "password": "12345678",
-    "database": "cricketdb"
+    "host": "mysql-cricbuzz-dscricbuzzlivestats.b.aivencloud.com",
+    "user": "avnadmin",
+    "password": "AVNS_VgGogs_zOjn3OawLe9q",
+    "database": "defaultdb"
 }
 
 def run_query(query):
@@ -60,6 +60,7 @@ def app():
 
     if st.button("Show Leaderboards"):
         display_leaderboards()
+
 
 
 app()
