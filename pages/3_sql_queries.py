@@ -10,10 +10,10 @@ import pandas as pd
 
 # Database config
 DB_CONFIG = {
-    "host": "localhost",
-    "user": "root",
-    "password": "12345678",
-    "database": "cricketdb"
+    "host": "mysql-cricbuzz-dscricbuzzlivestats.b.aivencloud.com",
+    "user": "avnadmin",
+    "password": "AVNS_VgGogs_zOjn3OawLe9q",
+    "database": "defaultdb"
 }
 
 def run_query(query):
@@ -250,3 +250,4 @@ def app():
 
 if __name__ == "__main__":
     app()
+
