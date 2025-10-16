@@ -11,10 +11,10 @@ import pandas as pd
 
 # Database config
 DB_CONFIG = {
-    "host": "localhost",
-    "user": "root",
-    "password": "12345678",
-    "database": "cricketdb"
+    "host": "mysql-cricbuzz-dscricbuzzlivestats.b.aivencloud.com",
+    "user": "avnadmin",
+    "password": "AVNS_VgGogs_zOjn3OawLe9q",
+    "database": "defaultdb"
 }
 
 def get_connection():
@@ -107,5 +107,6 @@ def app():
         if delete_btn:
             delete_player(d_player_id, d_match_id)
             st.warning(f"⚠️ Record for Player {d_player_id} (Match {d_match_id}) deleted!")
+
 
 app()
