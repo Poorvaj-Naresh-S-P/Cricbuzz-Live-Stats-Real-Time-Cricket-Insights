@@ -42,26 +42,19 @@ def top_player_stats_page():
     # If the structure differs, inspect the printed JSON and modify accordingly.
 
     # Process batting stats
-    if "batting" in data:
-        st.header("Top Batting Stats")
-        for stat in data["batting"]:
-            category = stat.get("category", "Unknown").replace("_", " ").title()
-            players = stat.get("players", [])
-            if players:
-                df = pd.DataFrame(players)
-                df.columns = ["Player", "Value"]  # Rename columns for clarity
-                
-                # Display table
-                st.subheader(f"{category}")
-                st.dataframe(df, use_container_width=True)
-                
-                # Visualize as bar chart
-                fig = px.bar(df, x="Player", y="Value", title=f"{category} - Top Players", 
-                             labels={"Value": category.replace(" ", "")})
-                st.plotly_chart(fig, use_container_width=True)
-            else:
-                st.write(f"No data available for {category}.")
-
+    st.header("Top Player Stats")
+    for stat in data:  # Assuming data is a list
+        category = stat.get("category", "Unknown").replace("_", " ").title()
+        players = stat.get("players", [])
+        if players:
+            df = pd.DataFrame(players)
+            df.columns = ["Player", "Value"]
+            st.subheader(f"{category}")
+            st.dataframe(df, use_container_width=True)
+            fig = px.bar(df, x="Player", y="Value", title=f"{category} - Top Players")
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.write(f"No data for {category}.")
     # Process bowling stats
     if "bowling" in data:
         st.header("Top Bowling Stats")
@@ -90,3 +83,4 @@ def top_player_stats_page():
 # Run the page (integrate this into your main Streamlit app)
 if __name__ == "__main__":
     top_player_stats_page()
+
