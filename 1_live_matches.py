@@ -3,7 +3,7 @@ import streamlit as st
 
 API_KEY = "241cbfdb81mshf7f104545e0f7b2p18118ejsn97a7eadb6ac8"
 
-def live_matches_page:	
+def live_matches_page():
 	def fetch_matches(endpoint: str):
 	    url = f"https://cricbuzz-cricket2.p.rapidapi.com/matches/v1/{endpoint}"
 	    headers = {
@@ -74,3 +74,4 @@ def live_matches_page:
 	    upcoming_data = fetch_matches("upcoming")
 	
 	    render_matches(upcoming_data)
+
