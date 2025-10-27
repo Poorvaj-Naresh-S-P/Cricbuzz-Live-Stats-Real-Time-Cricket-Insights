@@ -39,3 +39,4 @@ elif menu == "CRUD":
 # -------------------- ABOUT PAGE --------------------
 elif menu == "About":
     st.text("This Project is created by Poorvaj Naresh S P using Streamlit with Python and SQL")
+
