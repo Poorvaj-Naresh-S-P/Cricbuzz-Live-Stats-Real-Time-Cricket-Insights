@@ -78,23 +78,24 @@ if menu == "Home":
 
 # -------------------- LIVE MATCHES PAGE --------------------
 elif menu == "Live Matches":
-    live_page.live_matches_page()
+    live_matches_page()
 
 # -------------------- TOP PLAYER STATS PAGE --------------------
 elif menu == "Top Player Stats":
-    stats_page.icc_rankings_page()
+    icc_rankings_page()
 
 # -------------------- SQL QUERIES & ANALYTICS PAGE --------------------
 elif menu == "SQL Queries & Analytics":
-    sql_page.sql_queries_page()
+    sql_queries_page()
 
 # -------------------- CRUD PAGE --------------------
 elif menu == "CRUD":
-    crud_page.crud_page()
+    crud_page()
 
 # -------------------- ABOUT PAGE --------------------
 elif menu == "About":
     st.text("This Project is created by Poorvaj Naresh S P using Streamlit with Python and SQL")
+
 
 
 
