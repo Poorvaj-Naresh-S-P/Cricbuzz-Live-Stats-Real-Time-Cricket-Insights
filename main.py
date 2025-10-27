@@ -2,11 +2,12 @@ import streamlit as st
 
 st.set_page_config(page_title="Cricbuzz LiveStats", layout="wide")
 
-# Import your pages here
-import live_matches as live_page
-import top_stats as stats_page
-import sql_queries as sql_page
-import crud_operations as crud_page
+# ✅ Correct imports (after renaming files)
+from live_matches import live_matches_page
+from top_stats import icc_rankings_page
+from sql_queries import sql_queries_page
+from crud_operations import crud_page
+
 
 st.sidebar.title("Navigation")
 menu = st.sidebar.radio("Go to", ["Home","Live Matches","Top Player Stats","SQL Queries & Analytics","CRUD","About"])
@@ -94,6 +95,7 @@ elif menu == "CRUD":
 # -------------------- ABOUT PAGE --------------------
 elif menu == "About":
     st.text("This Project is created by Poorvaj Naresh S P using Streamlit with Python and SQL")
+
 
 
 
