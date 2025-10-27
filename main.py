@@ -92,9 +92,8 @@ elif menu == "SQL Queries & Analytics":
 elif menu == "CRUD":
     crud_page()
 
-# -------------------- ABOUT PAGE --------------------
-elif menu == "About":
-    st.text("This Project is created by Poorvaj Naresh S P using Streamlit with Python and SQL")
+
+
 
 
 
