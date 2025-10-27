@@ -1,49 +1,46 @@
 import streamlit as st
-import mysql.connector
 import pandas as pd
+from sqlalchemy import create_engine, text
 
 # ------------------ DATABASE CONNECTION ------------------
-def get_connection():
-    return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="",
-        database="cricket"
-    )
+# 🔹 Replace password if needed → example: "mysql+pymysql://root:1234@localhost/cricket_db"
+engine = create_engine("mysql+pymysql://root:@localhost/cricket_db")
+
 
 # ------------------ FETCH DATA ------------------
 def load_players():
-    conn = get_connection()
-    df = pd.read_sql("SELECT * FROM players", conn)
-    conn.close()
+    query = "SELECT * FROM players"
+    df = pd.read_sql(query, engine)
     return df
 
 # ------------------ ADD PLAYER ------------------
 def add_player(name, team, matches, runs, wickets):
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("INSERT INTO players (name, team, matches, runs, wickets) VALUES (%s,%s,%s,%s,%s)",
-                   (name, team, matches, runs, wickets))
-    conn.commit()
-    conn.close()
+    query = text("""
+        INSERT INTO players (name, team, matches, runs, wickets)
+        VALUES (:name, :team, :matches, :runs, :wickets)
+    """)
+    with engine.begin() as conn:
+        conn.execute(query, {"name": name, "team": team, "matches": matches, "runs": runs, "wickets": wickets})
 
 # ------------------ UPDATE PLAYER ------------------
 def update_player(pid, name, team, matches, runs, wickets):
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("""
-        UPDATE players SET name=%s, team=%s, matches=%s, runs=%s, wickets=%s WHERE id=%s
-    """,(name, team, matches, runs, wickets, pid))
-    conn.commit()
-    conn.close()
+    query = text("""
+        UPDATE players 
+        SET name=:name, team=:team, matches=:matches, runs=:runs, wickets=:wickets
+        WHERE id=:pid
+    """)
+    with engine.begin() as conn:
+        conn.execute(query, {
+            "pid": pid, "name": name, "team": team,
+            "matches": matches, "runs": runs, "wickets": wickets
+        })
 
 # ------------------ DELETE PLAYER ------------------
 def delete_player(pid):
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("DELETE FROM players WHERE id=%s",(pid,))
-    conn.commit()
-    conn.close()
+    query = text("DELETE FROM players WHERE id=:pid")
+    with engine.begin() as conn:
+        conn.execute(query, {"pid": pid})
+
 
 # =======================================================
 # STREAMLIT UI
@@ -71,35 +68,41 @@ if choice == "Add Player":
 elif choice == "View Players":
     st.subheader("📋 Player Stats Table")
     df = load_players()
-    st.dataframe(df)
+    st.dataframe(df, use_container_width=True)
 
 # ------------------ UPDATE PLAYER PAGE ------------------
 elif choice == "Update Player":
     st.subheader("✏️ Update Player Stats")
     df = load_players()
-    player_list = df['id'].tolist()
     
-    pid = st.selectbox("Select Player ID", player_list)
-    player_data = df[df['id']==pid].iloc[0]
+    if df.empty:
+        st.warning("⚠ No players found in database.")
+    else:
+        player_list = df['id'].tolist()
+        pid = st.selectbox("Select Player ID", player_list)
+        player_data = df[df['id']==pid].iloc[0]
 
-    name = st.text_input("Name", player_data.name)
-    team = st.text_input("Team", player_data.team)
-    matches = st.number_input("Matches", value=player_data.matches)
-    runs = st.number_input("Runs", value=player_data.runs)
-    wickets = st.number_input("Wickets", value=player_data.wickets)
+        name = st.text_input("Name", player_data.name)
+        team = st.text_input("Team", player_data.team)
+        matches = st.number_input("Matches", value=player_data.matches)
+        runs = st.number_input("Runs", value=player_data.runs)
+        wickets = st.number_input("Wickets", value=player_data.wickets)
 
-    if st.button("Update"):
-        update_player(pid, name, team, matches, runs, wickets)
-        st.success("✅ Player updated successfully!")
+        if st.button("Update"):
+            update_player(pid, name, team, matches, runs, wickets)
+            st.success("✅ Player updated successfully!")
 
 # ------------------ DELETE PLAYER PAGE ------------------
 elif choice == "Delete Player":
     st.subheader("🗑 Delete Player")
     df = load_players()
-    player_list = df['id'].tolist()
 
-    pid = st.selectbox("Select Player ID to Delete", player_list)
+    if df.empty:
+        st.warning("⚠ No players to delete.")
+    else:
+        player_list = df['id'].tolist()
+        pid = st.selectbox("Select Player ID to Delete", player_list)
 
-    if st.button("Delete"):
-        delete_player(pid)
-        st.error("❌ Player Deleted Successfully!")
+        if st.button("Delete"):
+            delete_player(pid)
+            st.error("❌ Player Deleted Successfully!")
