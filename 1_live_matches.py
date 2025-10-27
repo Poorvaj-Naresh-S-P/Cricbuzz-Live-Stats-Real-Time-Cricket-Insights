@@ -72,6 +72,6 @@ def live_matches_page():
 	
 	with tab3:
 	    upcoming_data = fetch_matches("upcoming")
-	
 	    render_matches(upcoming_data)
+
 
