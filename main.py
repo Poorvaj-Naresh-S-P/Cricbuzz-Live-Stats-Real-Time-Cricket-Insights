@@ -10,7 +10,7 @@ from crud_operations import crud_page
 
 
 st.sidebar.title("Navigation")
-menu = st.sidebar.radio("Go to", ["Home","Live Matches","Top Player Stats","SQL Queries & Analytics","CRUD","About"])
+menu = st.sidebar.radio("Go to", ["Home","Live Matches","Top Player Stats","SQL Queries & Analytics","CRUD"])
 
 # -------------------- HOME PAGE --------------------
 if menu == "Home":
@@ -91,6 +91,7 @@ elif menu == "SQL Queries & Analytics":
 # -------------------- CRUD PAGE --------------------
 elif menu == "CRUD":
     crud_page()
+
 
 
 
